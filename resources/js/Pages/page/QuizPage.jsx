@@ -119,38 +119,63 @@ export default function QuizPage({ auth }) {
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="flex justify-end">
-                        <div className="w-100 flex justify-between">
-                            <div className="w-75 flex items-center">
-                                <select
-                                    onClick={Filter}
-                                    name=""
-                                    id=""
-                                    style={{
-                                        border: "1px solid #dee2e6",
-                                        borderRadius: "8px",
-                                    }}
-                                >
-                                    <option value="All">All</option>
-                                    <option value="Easy">Easy</option>
-                                    <option value="Average">Average</option>
-                                    <option value="Hard">Hard</option>
-                                </select>
+                        <div className="w-100 flex flex-column">
+                            <div className="w-100 p-2 flex justify-end">
+                                <div className="w-75 flex justify-end">
+                                    <div className="w-50 flex justify-end">
+                                        <input
+                                            type="text"
+                                            placeholder="Search here..."
+                                            onChange={(e) =>
+                                                setQuizSearch(e.target.value)
+                                            }
+                                            className="searchhere"
+                                            style={{
+                                                padding: "10px",
+                                                borderRadius: "50px",
+                                                border: "1px solid #dee2e6",
+                                                width: "100%",
+                                            }}
+                                        />
+                                    </div>
+                                </div>
                             </div>
-                            <div className="w-50 p-4 flex justify-between">
-                                <input
-                                    type="text"
-                                    placeholder="Search here..."
-                                    onChange={(e) =>
-                                        setQuizSearch(e.target.value)
-                                    }
-                                    className="searchhere"
-                                    style={{
-                                        padding: "10px",
-                                        borderRadius: "50px",
-                                        border: "1px solid #dee2e6",
-                                        width: "100%",
-                                    }}
-                                />
+                            <div className="w-100 flex items-center pb-4">
+                                <div>
+                                        <label htmlFor="lvl" className="opacity-50">Level of Difficulty:</label>
+                                    <select
+                                        onClick={Filter}
+                                        name=""
+                                        id="lvl"
+                                        style={{
+                                            border: "1px solid #dee2e6",
+                                            borderRadius: "8px",
+                                        }}
+                                    >
+                                        <option value="All">All</option>
+                                        <option value="Easy">Easy</option>
+                                        <option value="Average">Average</option>
+                                        <option value="Hard">Hard</option>
+                                    </select>
+                                </div>
+                               <div   className="ml-2">
+                                    <label className="opacity-50">per Course:</label>
+                                     <select
+                                        onClick={Filter}
+                                        name=""
+                                        id=""
+                                        style={{
+                                            border: "1px solid #dee2e6",
+                                            borderRadius: "8px",
+                                        }}
+                                      
+                                    >
+                                        <option value="All">All</option>
+                                        <option value="Easy">ITEC 101</option>
+                                        <option value="Average">GNED 09</option>
+                                        <option value="Hard">ITEC 100</option>
+                                    </select>
+                               </div>
                             </div>
                         </div>
                     </div>

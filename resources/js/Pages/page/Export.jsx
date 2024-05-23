@@ -128,7 +128,7 @@ export default function QuizPage({ auth }) {
                             <Example/>
                             {/* <ComponentToPrint value={records} /> */}
                         </div>
-                    )}
+                    )}  
                 </div>
             </div>
         </AuthenticatedLayout>

@@ -10,7 +10,7 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
     });
     const [level, setLevel] = useState();
     useEffect(() => {
-        setLevel(localStorage.getItem("level"));
+        setLevel(localStorage.getItem("level"));    
     });
 
     const [records, setRecords] = useState([{}]);
