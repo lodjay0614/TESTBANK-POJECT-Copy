@@ -15,7 +15,7 @@ export default function QuizPage({ auth }) {
     const setData = (e) => {
         const item = e.target.value;
         if (item <= 0) {
-            setLimitItem(1);    
+            setLimitItem(1);
         } else {
             setLimitItem(item);
         }
@@ -35,8 +35,7 @@ export default function QuizPage({ auth }) {
         window.localStorage.setItem("limit", JSON.stringify(LimitItem));
         window.localStorage.setItem("level", JSON.stringify(LvlItem));
     };
-    
-  
+
     // const generateWordDocument = () => {
     //     const doc = new docx.Document();
 
@@ -58,7 +57,17 @@ export default function QuizPage({ auth }) {
     //         saveAs(blob, "first.docx");
     //     });
     // };
-
+    const [Courserecords, setCourseRecords] = useState([]);
+    useEffect(() => {
+        const getQuizdata = async () => {
+            const reqdata = await fetch(
+                `http://127.0.0.1:8000/jsonHandledCourses/${auth.user.id}`
+            );
+            const resdata = await reqdata.json();
+            setCourseRecords(resdata);
+        };
+        getQuizdata();
+    }, []);
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -73,16 +82,19 @@ export default function QuizPage({ auth }) {
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden rounded-md shadow-sm p-12 mb-4 flex">
-                        <div className="flex w-50">
+                        <div className="flex w-full">
                             <div className="flex flex-column m-2 h-full w-50">
-                                <label htmlFor="lvl">
+                                <label
+                                    htmlFor="lvl"
+                                    className="opacity-50 text-sm"
+                                >
                                     Level of Difficulty:
                                 </label>
                                 <select
                                     onClick={(e) => setLvl(e)}
                                     name="lvl"
                                     id="lvl"
-                                    className="p-2 rounded-md cursor-pointer"
+                                    className="p-2 rounded-md cursor-pointer  border-gray-500/50"
                                 >
                                     <option value="Easy">Easy</option>
                                     <option value="Average">Average</option>
@@ -90,17 +102,48 @@ export default function QuizPage({ auth }) {
                                 </select>
                             </div>
                             <div className="flex flex-column h-full m-2">
-                                <label htmlFor="item">Number of Items:</label>
+                                <label
+                                    htmlFor="item"
+                                    className="opacity-50 text-sm"
+                                >
+                                    Number of Items:
+                                </label>
                                 <input
                                     value={LimitItem}
                                     onChange={(e) => setData(e)}
                                     type="number"
                                     name="item"
                                     id="item"
-                                    className="p-2 rounded-md cursor-pointer"
+                                    className="p-2 rounded-md cursor-pointer border-gray-500/50"
                                 />
                             </div>
-                            <div id="printpaper"></div>
+                            {/* <div className="flex flex-column w-full h-full m-2">
+                                <label
+                                    htmlFor="lvl"
+                                    className="opacity-50 text-sm"
+                                >
+                                    Course:
+                                </label>
+                                <select
+                                    onClick={(e) => setLvl(e)}
+                                    name="Field"
+                                    id="Field"
+                                    className="p-2 rounded-md cursor-pointer border-gray-500/50"
+                                >
+                                    <option value="" className="text-center">
+                                        ---Select Course---
+                                    </option>
+                                    {Courserecords &&
+                                        Courserecords.map((data, index) => (
+                                            <option
+                                                value={`${data.course_code}`}
+                                                key={index}
+                                            >
+                                                {data.course_code}
+                                            </option>
+                                        ))}
+                                </select>
+                            </div> */}
                         </div>
                         <div className="flex justify-end items-center m-2 relative w-50">
                             <PrimaryButton
@@ -128,7 +171,7 @@ export default function QuizPage({ auth }) {
                             <Example/>
                             {/* <ComponentToPrint value={records} /> */}
                         </div>
-                    )}  
+                    )}
                 </div>
             </div>
         </AuthenticatedLayout>

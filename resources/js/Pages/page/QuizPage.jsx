@@ -11,8 +11,9 @@ export default function QuizPage({ auth }) {
         const getQuizdata = async () => {
             const reqdata = await fetch("http://127.0.0.1:8000/jsonQuiz");
             const resdata = await reqdata.json();
-            setUserdata(resdata);
-            setRecords(resdata);
+            const array = Object.values(resdata);
+            setUserdata(array);
+            setRecords(array);
         };
         getQuizdata();
     }, []);
@@ -22,20 +23,23 @@ export default function QuizPage({ auth }) {
             setRecords(categoryData);
         } else {
             setRecords(
-                categoryData.filter((f) =>
-                    f.difficulty.includes(e.target.value)
+                categoryData.filter(
+                    (f) =>
+                        f.difficulty.includes(e.target.value) ||
+                        f.FieldOf.includes(e.target.value)
                 )
             );
         }
     };
 
-    const EditQuiz = (Question, A, B, C, D, key, difficulty, id) => {
+    const EditQuiz = (Question, A, B, C, D, key, difficulty, id, Fieldof) => {
         const question = Question;
         const answerA = A;
         const answerB = B;
         const answerC = C;
         const answerD = D;
         const Akey = key;
+        const FieldOf = Fieldof;
         const Alvl = difficulty;
         const Quizid = id;
 
@@ -49,6 +53,7 @@ export default function QuizPage({ auth }) {
                 answerD: answerD,
                 Alvl: Alvl,
                 Akey: Akey,
+                Fieldof: FieldOf,
                 id: Quizid,
             };
         });
@@ -84,6 +89,7 @@ export default function QuizPage({ auth }) {
         answerC: "",
         answerD: "",
         Akey: "",
+        Fieldof: "",
         Alvl: "",
         id: "",
     });
@@ -104,7 +110,17 @@ export default function QuizPage({ auth }) {
         });
     };
     // end here
-
+    const [Courserecords, setCourseRecords] = useState([]);
+    useEffect(() => {
+        const getQuizdata = async () => {
+            const reqdata = await fetch(
+                `http://127.0.0.1:8000/jsonHandledCourses/${auth.user.id}`
+            );
+            const resdata = await reqdata.json();
+            setCourseRecords(resdata);
+        };
+        getQuizdata();
+    }, []);
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -118,69 +134,107 @@ export default function QuizPage({ auth }) {
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="flex justify-end">
-                        <div className="w-100 flex flex-column">
-                            <div className="w-100 p-2 flex justify-end">
-                                <div className="w-75 flex justify-end">
-                                    <div className="w-50 flex justify-end">
-                                        <input
-                                            type="text"
-                                            placeholder="Search here..."
-                                            onChange={(e) =>
-                                                setQuizSearch(e.target.value)
-                                            }
-                                            className="searchhere"
+                    <div className="p-12 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                        <div className="flex justify-end">
+                            <div className="w-100 flex flex-column">
+                                <div className="w-100 p-2 flex justify-end">
+                                    <div className="w-75 flex justify-end">
+                                        <div className="w-50 flex justify-end">
+                                            <input
+                                                type="text"
+                                                placeholder="Search here..."
+                                                onChange={(e) =>
+                                                    setQuizSearch(
+                                                        e.target.value
+                                                    )
+                                                }
+                                                className="searchhere"
+                                                style={{
+                                                    padding: "10px",
+                                                    borderRadius: "50px",
+                                                    border: "1px solid #dee2e6",
+                                                    width: "100%",
+                                                    backgroundColor: "#f3f4f6",
+                                                }}
+                                            />
+                                            <svg
+                                                style={{
+                                                    display: "absolute",
+                                                    transform:
+                                                        "translate(-40px, 12px)",
+                                                }}
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="20"
+                                                height="20"
+                                                fill="currentColor"
+                                                className="bi bi-search opacity-50"
+                                                viewBox="0 0 16 16"
+                                            >
+                                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="w-100 flex items-center pb-4">
+                                    <div>
+                                        <select
+                                            onClick={Filter}
+                                            name=""
+                                            id="lvl"
                                             style={{
-                                                padding: "10px",
-                                                borderRadius: "50px",
                                                 border: "1px solid #dee2e6",
-                                                width: "100%",
+                                                borderRadius: "8px",
                                             }}
-                                        />
+                                        >
+                                            <option value="All">All</option>
+                                            <option value="Easy">Easy</option>
+                                            <option value="Average">
+                                                Average
+                                            </option>
+                                            <option value="Hard">Hard</option>
+                                        </select>
+                                    </div>
+                                    <div className="ml-2">
+                                        <select
+                                            onClick={Filter}
+                                            name=""
+                                            id=""
+                                            style={{
+                                                border: "1px solid #dee2e6",
+                                                borderRadius: "8px",
+                                            }}
+                                        >
+                                            <option value="All">All</option>
+                                            {Courserecords &&
+                                                Courserecords.map(
+                                                    (data, index) => (
+                                                        <option
+                                                            value={`${data.course_code}`}
+                                                            key={index}
+                                                        >
+                                                            {data.course_code}
+                                                        </option>
+                                                    )
+                                                )}
+                                        </select>
+                                    </div>
+                                    <div className="ml-2">
+                                        <select
+                                            name=""
+                                            id=""
+                                            style={{
+                                                border: "1px solid #dee2e6",
+                                                borderRadius: "8px",
+                                            }}
+                                        >
+                                            <option value="">Approved</option>
+                                            <option value="">Pending</option>
+                                            <option value="">Denied</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
-                            <div className="w-100 flex items-center pb-4">
-                                <div>
-                                        <label htmlFor="lvl" className="opacity-50">Level of Difficulty:</label>
-                                    <select
-                                        onClick={Filter}
-                                        name=""
-                                        id="lvl"
-                                        style={{
-                                            border: "1px solid #dee2e6",
-                                            borderRadius: "8px",
-                                        }}
-                                    >
-                                        <option value="All">All</option>
-                                        <option value="Easy">Easy</option>
-                                        <option value="Average">Average</option>
-                                        <option value="Hard">Hard</option>
-                                    </select>
-                                </div>
-                               <div   className="ml-2">
-                                    <label className="opacity-50">per Course:</label>
-                                     <select
-                                        onClick={Filter}
-                                        name=""
-                                        id=""
-                                        style={{
-                                            border: "1px solid #dee2e6",
-                                            borderRadius: "8px",
-                                        }}
-                                      
-                                    >
-                                        <option value="All">All</option>
-                                        <option value="Easy">ITEC 101</option>
-                                        <option value="Average">GNED 09</option>
-                                        <option value="Hard">ITEC 100</option>
-                                    </select>
-                               </div>
-                            </div>
                         </div>
-                    </div>
-
-                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <table
                             className="table max-w-7xl mx-auto"
                             id="resizable"
@@ -231,7 +285,8 @@ export default function QuizPage({ auth }) {
                                                             rec.Ad,
                                                             rec.Akey,
                                                             rec.difficulty,
-                                                            rec.id
+                                                            rec.id,
+                                                            rec.FieldOf
                                                         )
                                                     }
                                                     style={{
@@ -277,7 +332,7 @@ export default function QuizPage({ auth }) {
                         </table>
                         <div className="flex justify-between p-2">
                             <PrimaryButton
-                                className="ms-4"
+                                className=""
                                 data-bs-toggle="modal"
                                 data-bs-target="#AddQuizModal"
                             >
@@ -483,6 +538,49 @@ export default function QuizPage({ auth }) {
                                                         htmlFor="recipient-name"
                                                         className="col-form-label"
                                                     >
+                                                        Field of:
+                                                    </label>
+                                                    <select
+                                                        name="Fieldof"
+                                                        className="form-control"
+                                                        id="recipient-name"
+                                                        value={data.Fieldof}
+                                                        onChange={
+                                                            handleInputChange
+                                                        }
+                                                        required
+                                                    >
+                                                        <option
+                                                            value=""
+                                                            className="text-center"
+                                                        >
+                                                            ---Select Course---
+                                                        </option>
+                                                        {Courserecords &&
+                                                            Courserecords.map(
+                                                                (
+                                                                    data,
+                                                                    index
+                                                                ) => (
+                                                                    <option
+                                                                        value={`${data.course_code}`}
+                                                                        key={
+                                                                            index
+                                                                        }
+                                                                    >
+                                                                        {
+                                                                            data.course_code
+                                                                        }
+                                                                    </option>
+                                                                )
+                                                            )}
+                                                    </select>
+                                                </div>
+                                                <div className="mb-3">
+                                                    <label
+                                                        htmlFor="recipient-name"
+                                                        className="col-form-label"
+                                                    >
                                                         Level of Difficulty:
                                                     </label>
                                                     <select
@@ -676,6 +774,51 @@ export default function QuizPage({ auth }) {
                                                         htmlFor="recipient-name"
                                                         className="col-form-label"
                                                     >
+                                                        Field of:
+                                                    </label>
+                                                    <select
+                                                        name="Alvl"
+                                                        className="form-control"
+                                                        id="recipient-name"
+                                                        onChange={(e) =>
+                                                            setData(
+                                                                "Fieldof",
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                        required
+                                                    >
+                                                        <option
+                                                            value=""
+                                                            className="text-center"
+                                                        >
+                                                            ---Select Course---
+                                                        </option>
+                                                        {Courserecords &&
+                                                            Courserecords.map(
+                                                                (
+                                                                    data,
+                                                                    index
+                                                                ) => (
+                                                                    <option
+                                                                        value={`${data.course_code}`}
+                                                                        key={
+                                                                            index
+                                                                        }
+                                                                    >
+                                                                        {
+                                                                            data.course_code
+                                                                        }
+                                                                    </option>
+                                                                )
+                                                            )}
+                                                    </select>
+                                                </div>
+                                                <div className="mb-3">
+                                                    <label
+                                                        htmlFor="recipient-name"
+                                                        className="col-form-label"
+                                                    >
                                                         Level of Difficulty:
                                                     </label>
                                                     <select
@@ -690,6 +833,12 @@ export default function QuizPage({ auth }) {
                                                         }
                                                         required
                                                     >
+                                                        <option
+                                                            value=""
+                                                            className="text-center"
+                                                        >
+                                                            ---Select Level---
+                                                        </option>
                                                         <option value="Easy">
                                                             Easy
                                                         </option>

@@ -7,19 +7,19 @@ import { Link } from "@inertiajs/react";
 
 export default function Authenticated({ auth, user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
-        useState(false);    
+        useState(false);
 
-        const [openExam, setExamOpen] = useState(false);
-        const toggleExamOpen = (e) => {
-            e.preventDefault();
-            setExamOpen((previousState) => !previousState);
-        };
-        const [openReg, setRegOpen] = useState(false);
-        const toggleRegOpen = (e) => {
-            e.preventDefault();
-            setRegOpen((previousState) => !previousState);
-        };
-        
+    const [openExam, setExamOpen] = useState(false);
+    const toggleExamOpen = (e) => {
+        e.preventDefault();
+        setExamOpen((previousState) => !previousState);
+    };
+    const [openReg, setRegOpen] = useState(false);
+    const toggleRegOpen = (e) => {
+        e.preventDefault();
+        setRegOpen((previousState) => !previousState);
+    };
+
     return (
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
             <nav
@@ -51,6 +51,74 @@ export default function Authenticated({ auth, user, header, children }) {
                                     onClick={toggleExamOpen}
                                 >
                                     Exam
+                                    <svg
+                                        className="ms-2 -me-0.5 h-4 w-4"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20"
+                                        fill="currentColor"
+                                    >
+                                        <path
+                                            fillRule="evenodd"
+                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                            clipRule="evenodd"
+                                        />
+                                    </svg>
+                                </NavLink>
+                                {openExam && (
+                                    <div
+                                        onClick={() => setExamOpen(false)}
+                                        className="absolute rounded-md shadow-sm bg-white py-2 mt-14"
+                                    >
+                                        <ul>
+                                            <Dropdown.Link
+                                                href={route("exampage")}
+                                            >
+                                                Multiple Choice
+                                            </Dropdown.Link>
+                                            <Dropdown.Link
+                                                href={route("exampage")}
+                                            >
+                                                Identification
+                                            </Dropdown.Link>
+                                            <Dropdown.Link
+                                                href={route("exampage")}
+                                            >
+                                                Enumeration
+                                            </Dropdown.Link>
+                                            <Dropdown.Link
+                                                href={route("exampage")}
+                                            >
+                                                Problem Solving
+                                            </Dropdown.Link>
+                                            <Dropdown.Link
+                                                href={route("exampage")}
+                                            >
+                                                Figure
+                                            </Dropdown.Link>
+                                        </ul>
+                                    </div>
+                                )}
+                            </div>
+
+                            {user.role === "admin" ? (
+                                <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                    <NavLink
+                                        className="text-white"
+                                        active={route().current(
+                                            "register_teacher"
+                                        )}
+                                        onClick={toggleRegOpen}
+                                    >
+                                        Registration
+                                        <span
+                                            className="absolute w-5 h-5 rounded-full bg-red-600 flex justify-center items-center"
+                                            style={{
+                                                transform:
+                                                    "translate(95px, -12px)",
+                                            }}
+                                        >
+                                            <p className="text-xs">2</p>
+                                        </span>
                                         <svg
                                             className="ms-2 -me-0.5 h-4 w-4"
                                             xmlns="http://www.w3.org/2000/svg"
@@ -63,80 +131,52 @@ export default function Authenticated({ auth, user, header, children }) {
                                                 clipRule="evenodd"
                                             />
                                         </svg>
-                                </NavLink>
-                                {openExam && <div onClick={() => setExamOpen(false)} className="absolute rounded-md shadow-sm bg-white py-2 mt-14">
-                                        <ul>
-                                        <Dropdown.Link
-                                         href={route("exampage")}
-                                        >
-                                            Multiple Choice
-                                        </Dropdown.Link>
-                                        <Dropdown.Link
-                                         href={route("exampage")}
-                                        >
-                                            Identification
-                                        </Dropdown.Link>
-                                        <Dropdown.Link
-                                         href={route("exampage")}
-                                        >
-                                            Enumeration
-                                        </Dropdown.Link>
-                                        <Dropdown.Link
-                                         href={route("exampage")}
-                                        >
-                                            Problem Solving
-                                        </Dropdown.Link>
-                                        <Dropdown.Link
-                                         href={route("exampage")}
-                                        >
-                                            Figure
-                                        </Dropdown.Link>
-                                            
-                                        </ul>
-                                </div>}
-                            </div>
-
-                            {user.usertype === "admin" ? (
-                                <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                    <NavLink
-                                        className="text-white"
-                                        active={route().current("register_teacher")}
-                                        onClick={toggleRegOpen}
-                                    >
-                                        Registration
-                                                <svg
-                                                    className="ms-2 -me-0.5 h-4 w-4"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path
-                                                        fillRule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                        clipRule="evenodd"
-                                                    />
-                                                </svg>
                                     </NavLink>
-                                    {openReg && <div onClick={() => setRegOpen(false)} className="absolute rounded-md shadow-sm bg-white py-2 mt-14">
-                                        <ul>
-                                        <Dropdown.Link
-                                          href={route("register_teacher")}
+                                    {openReg && (
+                                        <div
+                                            onClick={() => setRegOpen(false)}
+                                            className="absolute rounded-md shadow-sm bg-white py-2 mt-14"
                                         >
-                                            Teacher Registration
-                                        </Dropdown.Link>
-                                        <Dropdown.Link
-                                         href={route("register_student")}
-                                        >
-                                            Student Registration
-                                        </Dropdown.Link>
-                                            
-                                        </ul>
-                                </div>}
+                                            <ul>
+                                                <Dropdown.Link
+                                                    href={route("reg_teacher")}
+                                                >
+                                                    Teacher Reg
+                                                </Dropdown.Link>
+                                                <Dropdown.Link
+                                                    href={route(
+                                                        "register_student"
+                                                    )}
+                                                >
+                                                    Student Reg
+                                                </Dropdown.Link>
+                                                <Dropdown.Link
+                                                    href={route(
+                                                        "register_courses"
+                                                    )}
+                                                >
+                                                    Courses
+                                                </Dropdown.Link>
+                                            </ul>
+                                        </div>
+                                    )}
                                 </div>
                             ) : (
                                 <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                     <a className="cursor-pointer opacity-0.5 inline-flex items-center border-transparent text-gray-500 dark:text-gray-400 focus:text-gray-700 dark:focus:text-gray-300 focus:border-gray-300 dark:focus:border-gray-700">
                                         Registration
+                                        <svg
+                                            className="ms-2 -me-0.5 h-4 w-4"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20"
+                                            fill="currentColor"
+                                        >
+                                            <path
+                                                fillRule="evenodd"
+                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                clipRule="evenodd"
+                                            />
+                                        </svg>
                                     </a>
                                 </div>
                             )}

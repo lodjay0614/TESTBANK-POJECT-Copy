@@ -13,15 +13,13 @@ return new class extends Migration
     {
         Schema::create('quiz_models', function (Blueprint $table) {
             $table->id();
-            $table->integer('Qnum')->nullable();
+            $table->string('handled_by')->nullable();
+            $table->string('Qstatus')->nullable();
             $table->string('Question')->nullable();
-            $table->string('Aa')->nullable();
-            $table->string('Ab')->nullable();
-            $table->string('Ac')->nullable();
-            $table->string('Ad')->nullable();
+            
             $table->string('Akey')->nullable();
             $table->string('difficulty')->nullable();
-            $table->string('department_name')->nullable();
+            $table->string('FieldOf')->nullable();
             $table->timestamps();
         });
     }

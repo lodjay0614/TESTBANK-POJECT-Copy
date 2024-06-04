@@ -21,14 +21,15 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
             );
             const resdata = await reqdata.json();
             setRecords(resdata);
-        };
+        }
         getQuizdata();
     },[]);
-    console.log(limit);
+
 
     return (
+        <div className="shadow-sm bg-white p-12 text-gray-900 dark:text-gray-100" style={{height:"150vh"}}>
         <div ref={ref}>
-            <div className="bg-white p-12 text-gray-900 dark:text-gray-100">
+            <div className="bg-transparent p-12 text-gray-900 dark:text-gray-100">
                 <div className="flex justify-center items-center">
                     <ApplicationLogo className="w-25 h-25 fill-current text-gray-500 mb-6" />
                 </div>
@@ -51,13 +52,13 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
                     </div>
                 </div>
 
-                {records.map((a, index) => (
+                {records && records.map((ask, index) => (
                     <div key={index}>
                         <div className="w-100 h-full">
                             <ol>
                                 <li>
                                     {index + 1}.&nbsp;
-                                    {a.Question}
+                                    {ask.Question}
                                 </li>
                             </ol>
                             <ul
@@ -72,7 +73,7 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
                                         margin: "3px",
                                     }}
                                 >
-                                    {a.Aa}
+                                    {ask.Aa}
                                 </li>
                                 <li
                                     style={{
@@ -80,7 +81,7 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
                                         margin: "3px",
                                     }}
                                 >
-                                    {a.Ab}
+                                    {ask.Ab}
                                 </li>
                                 <li
                                     style={{
@@ -88,7 +89,7 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
                                         margin: "3px",
                                     }}
                                 >
-                                    {a.Ac}
+                                    {ask.Ac}
                                 </li>
                                 <li
                                     style={{
@@ -96,13 +97,14 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
                                         margin: "3px",
                                     }}
                                 >
-                                    {a.Ad}
+                                    {ask.Ad}
                                 </li>
                             </ul>
                         </div>
                     </div>
                 ))}
             </div>
+        </div>
         </div>
     );
 });
@@ -119,24 +121,7 @@ export class Example extends React.PureComponent {
                         return (
                             <div className="flex justify-end mt-6">
                                 <PrimaryButton>
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="16"
-                                        height="16"
-                                        fill="currentColor"
-                                        className="mr-2 bi bi-box-arrow-down"
-                                        viewBox="0 0 16 16"
-                                    >
-                                        <path
-                                            fillRule="evenodd"
-                                            d="M3.5 10a.5.5 0 0 1-.5-.5v-8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 0 0 1h2A1.5 1.5 0 0 0 14 9.5v-8A1.5 1.5 0 0 0 12.5 0h-9A1.5 1.5 0 0 0 2 1.5v8A1.5 1.5 0 0 0 3.5 11h2a.5.5 0 0 0 0-1z"
-                                        />
-                                        <path
-                                            fillRule="evenodd"
-                                            d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708z"
-                                        />
-                                    </svg>
-                                    Print
+                                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="white" viewBox="0 0 512 512"><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zM432 248a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
                                 </PrimaryButton>
                             </div>
                         );
