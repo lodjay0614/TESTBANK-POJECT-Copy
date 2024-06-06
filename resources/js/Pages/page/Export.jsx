@@ -7,10 +7,13 @@ import { Document, Packer, Paragraph, VerticalAlign } from "docx";
 import { saveAs } from "file-saver";
 import Docxtemplater from "docxtemplater";
 import PrimaryButton from "@/Components/PrimaryButton";
-import { Example } from "./PrintButton";
+import { ComponentToPrint } from "./PrintButton";
 import ReactDOM from "react-dom";
+import { createPortal } from 'react-dom';
 
-export default function QuizPage({ auth }) {
+
+function QuizPage({ auth }) {
+    
     const [LimitItem, setLimitItem] = useState(0);
     const setData = (e) => {
         const item = e.target.value;
@@ -26,37 +29,15 @@ export default function QuizPage({ auth }) {
     };
 
     const [records, setRecords] = useState([{}]);
-    const getQuizdata = async () => {
+    const getQuizdata = async (e) => {
         const reqdata = await fetch(
             `http://127.0.0.1:8000/jsonQuizRandom/${LimitItem}/${LvlItem}`
         );
         const resdata = await reqdata.json();
         setRecords(resdata);
-        window.localStorage.setItem("limit", JSON.stringify(LimitItem));
-        window.localStorage.setItem("level", JSON.stringify(LvlItem));
     };
 
-    // const generateWordDocument = () => {
-    //     const doc = new docx.Document();
 
-    //     // Add content to the document
-    //     doc.addSection({
-    //         children: [
-    //             new docx.Paragraph({
-    //                 children: [
-    //                     new docx.TextRun({
-    //                         text: JSON.stringify(
-    //                             records.map((a, b) => <>{a.Question}</>)
-    //                         ),
-    //                     }),
-    //                 ],
-    //             }),
-    //         ],
-    //     });
-    //     docx.Packer.toBlob(doc).then((blob) => {
-    //         saveAs(blob, "first.docx");
-    //     });
-    // };
     const [Courserecords, setCourseRecords] = useState([]);
     useEffect(() => {
         const getQuizdata = async () => {
@@ -81,7 +62,7 @@ export default function QuizPage({ auth }) {
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white dark:bg-gray-800 overflow-hidden rounded-md shadow-sm p-12 mb-4 flex">
+                    <div className="bg-white dark:bg-gray-800 overflow-hidden rounded-md shadow-sm p-2 mb-4 flex">
                         <div className="flex w-full">
                             <div className="flex flex-column m-2 h-full w-50">
                                 <label
@@ -117,44 +98,18 @@ export default function QuizPage({ auth }) {
                                     className="p-2 rounded-md cursor-pointer border-gray-500/50"
                                 />
                             </div>
-                            {/* <div className="flex flex-column w-full h-full m-2">
-                                <label
-                                    htmlFor="lvl"
-                                    className="opacity-50 text-sm"
-                                >
-                                    Course:
-                                </label>
-                                <select
-                                    onClick={(e) => setLvl(e)}
-                                    name="Field"
-                                    id="Field"
-                                    className="p-2 rounded-md cursor-pointer border-gray-500/50"
-                                >
-                                    <option value="" className="text-center">
-                                        ---Select Course---
-                                    </option>
-                                    {Courserecords &&
-                                        Courserecords.map((data, index) => (
-                                            <option
-                                                value={`${data.course_code}`}
-                                                key={index}
-                                            >
-                                                {data.course_code}
-                                            </option>
-                                        ))}
-                                </select>
-                            </div> */}
                         </div>
                         <div className="flex justify-end items-center m-2 relative w-50">
                             <PrimaryButton
-                                onClick={getQuizdata}
+                                onClick={()=>getQuizdata()}
                                 className="h-50"
                             >
                                 Fetch/Filter
                             </PrimaryButton>
                         </div>
                     </div>
-                    {records.length > 1 && (
+                    {records.length > 1  && 
+                      
                         <div className="dark:bg-gray-800 overflow-hidden p-12 ">
                             <div>
                                 <div className="flex justify-center items-center mb-4 font-bold">
@@ -162,18 +117,19 @@ export default function QuizPage({ auth }) {
                                         -Page Preview-
                                     </h1>
                                 </div>
-                                <div className="flex justify-between">
-                                    <h1 className="mb-2 ml-4 opacity-50">
-                                        Page 1
-                                    </h1>
-                                </div>
+                               
                             </div>
-                            <Example/>
-                            {/* <ComponentToPrint value={records} /> */}
+                          
+                            <ComponentToPrint value={records} key={records.id}/>
+                         
                         </div>
-                    )}
+                       
+                    }
                 </div>
             </div>
         </AuthenticatedLayout>
     );
 }
+
+
+export default QuizPage;

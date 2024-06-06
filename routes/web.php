@@ -48,7 +48,8 @@ Route::get('/pending_question/{id}', [AdminController::class, "Pending_json"]);
 
 // quiz
 Route::get('/jsonQuiz', [ExamController::class, 'jsonQuiz']);
-Route::get('/jsonQuizRandom/{limit}/{lvl}', [ExportController::class, 'index']);
+Route::get('/jsonQuizRandom/{limit}/{level}', [ExportController::class, 'index']);
+Route::get('/jsonQuizAnsRandom', [ExportController::class, 'index_ans']);
 Route::get('/quizes', [ExamController::class, 'Quizes'])->name('quizes');
 Route::get('/delete/{id}', [ExamController::class, 'deleteQuiz'])->name('deleteQuiz');
 Route::post('/addQuiz', [ExamController::class, 'addQuiz'])->name('addQuiz');
