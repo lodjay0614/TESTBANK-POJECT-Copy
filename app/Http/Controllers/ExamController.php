@@ -18,6 +18,10 @@ class ExamController extends Controller
     {
         return Inertia::render('page/QuizPage');
     }
+    function exampage_pending()
+    {
+        return Inertia::render('page/PendingListPage');
+    }
     function jsonQuiz()
     { 
         $id =Auth::user()->id;

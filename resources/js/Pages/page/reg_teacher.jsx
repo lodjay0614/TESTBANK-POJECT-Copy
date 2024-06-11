@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import NavLink from "@/Components/NavLink";
 import Details from "./Details";
 export default function register_teacher({ auth }) {
-    const [records, setRecords] = useState();
+    const [records, setRecords] = useState([]);
     useEffect(() => {
         const getTeacherdata = async () => {
             const reqdata = await fetch("http://127.0.0.1:8000/jsonTeacher");
@@ -20,7 +20,30 @@ export default function register_teacher({ auth }) {
         getTeacherdata();
     }, []);
 
+    // pagination
     const [search, setQuizSearch] = useState("");
+    const [currentPage, setCurentPage] = useState(1);
+    const recordsPerPage = 7;
+    const lastIndex = currentPage * recordsPerPage;
+    const firstIndex = lastIndex - recordsPerPage;
+    // const record = records.slice(firstIndex, lastIndex);
+    const npage = Math.ceil(records.length / recordsPerPage);
+    const numbers = [...Array(npage + 1).keys()].slice(1);
+    function prePage() {
+        if (currentPage !== 1) {
+            setCurentPage(currentPage - 1);
+        }
+    }
+    function changeCPage(id) {
+        setCurentPage(id);
+    }
+    function nextPage() {
+        if (currentPage !== npage) {
+            setCurentPage(currentPage + 1);
+        }
+    }
+    // end pagination
+
     const [openID, setOpenID] = useState();
     const [openExam, setExamOpen] = useState(false);
     const toggleExamOpen = (id, e) => {
@@ -71,179 +94,203 @@ export default function register_teacher({ auth }) {
         >
             <Head title="Exam" />
 
-            <div className="py-12">
-                {successMessage && (
-                    <div className=" bg-blue-500 px-96 py-6 mb-8">
-                        {successMessage}
-                    </div>
-                )}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.0/css/boxicons.min.css" integrity="sha512-pVCM5+SN2+qwj36KonHToF2p1oIvoU3bsqxphdOIWMYmgr4ZqD3t5DjKvvetKhXGc/ZG5REYTT6ltKfExEei/Q==" crossOrigin="anonymous" referrerPolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.css" integrity="sha256-NAxhqDvtY0l4xn+YVa6WjAcmd94NNfttjNsDmNatFVc=" crossOrigin="anonymous" />
 
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="p-12 bg-white dark:bg-gray-800 overflow-hidden rounded-md shadow-sm flex flex-column">
-                        <div className="w-100 p-2 flex justify-end">
-                            <div className="w-75 flex justify-end">
-                                <div className="w-50 flex justify-end">
-                                    <input
-                                        type="text"
-                                        placeholder="Search here..."
-                                        onChange={(e) =>
-                                            setQuizSearch(e.target.value)
-                                        }
-                                        className="searchhere"
-                                        style={{
-                                            padding: "10px",
-                                            borderRadius: "50px",
-                                            border: "1px solid #dee2e6",
-                                            width: "100%",
-                                            backgroundColor: "#f3f4f6",
-                                        }}
-                                    />
-                                    <svg
-                                        style={{
-                                            display: "absolute",
-                                            transform: "translate(-40px, 12px)",
-                                        }}
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="20"
-                                        height="20"
-                                        fill="currentColor"
-                                        className="bi bi-search opacity-50"
-                                        viewBox="0 0 16 16"
-                                    >
-                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-                                    </svg>
+
+                <div className="w-100 p-2 mt-2 flex justify-end">
+                                            <div className="w-75 flex justify-end">
+                                                <div className="px-12 w-50 flex justify-end">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Search here..."
+                                                        onChange={(e) =>
+                                                            setQuizSearch(e.target.value)
+                                                        }
+                                                        className="searchhere"
+                                                        style={{
+                                                            padding: "10px",
+                                                            borderRadius: "50px",
+                                                            border: "1px solid #dee2e6",
+                                                            width: "100%",
+                                                                
+                                                           
+                                                        }}
+                                                    />
+                                                    <svg
+                                                        style={{
+                                                            display: "absolute",
+                                                            transform: "translate(-40px, 12px)",
+                                                        }}
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        width="20"
+                                                        height="20"
+                                                        fill="currentColor"
+                                                        className="bi bi-search opacity-50"
+                                                        viewBox="0 0 16 16"
+                                                    >
+                                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        </div>
+                <div className="container ">
+                    <div className="row align-items-center">
+                        <div className="col-md-6">
+                            <div className="mb-3">
+                                <h5 className="card-title">Users List <span className="text-muted fw-normal ms-2">(834)</span></h5>
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <div className="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
+                                <div>
+                                    <ul className="nav nav-pills">
+                                        <li className="nav-item">
+                                            <a
+                                                aria-current="page"
+                                                href="#"
+                                                className="router-link-active router-link-exact-active nav-link active"
+                                                data-bs-toggle="tooltip"
+                                                data-bs-placement="top"
+                                                title=""
+                                                data-bs-original-title="List"
+                                                aria-label="List"
+                                            >
+                                                <i className="bx bx-list-ul"></i>
+                                            </a>
+                                        </li>
+                                        <li className="nav-item">
+                                            <a href="#" className="nav-link" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Grid" aria-label="Grid"><i className="bx bx-grid-alt"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <a href={"./reg_form"}  className="btn btn-primary"><i className="bx bx-plus me-1"></i> Add New</a>
+                                </div>
+                                <div className="dropdown">
+                                    <a className="btn btn-link text-muted py-1 font-size-16 shadow-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i className="bx bx-dots-horizontal-rounded"></i></a>
+                                    <ul className="dropdown-menu dropdown-menu-end">
+                                        <li><a className="dropdown-item" href="#">Action</a></li>
+                                        <li><a className="dropdown-item" href="#">Another action</a></li>
+                                        <li><a className="dropdown-item" href="#">Something else here</a></li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
-                        <div className="py-2">
-                            <NavLink
-                                href={"./reg_form"}
-                                className="inline-flex items-center px-4 py-2 pt-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150"
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="20"
-                                    height="20"
-                                    fill="currentColor"
-                                    className="bi bi-person-plus-fill"
-                                    viewBox="0 0 16 16"
-                                >
-                                    <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
-                                    <path
-                                        fill-rule="evenodd"
-                                        d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5"
-                                    />
-                                </svg>
-                            </NavLink>
-                        </div>
-                        <table className="table table-hover max-w-7xl mx-auto">
-                            <thead className="table-dark">
-                                <tr>
-                                    <th>Teacher Number</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Status</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                {records &&
-                                    records
-                                        .filter((item) => {
-                                            return (
-                                                search.toLowerCase() === ""
-                                                    ? item
-                                                    : item.name
-                                                          .toLowerCase()
-                                                          .includes(search),
-                                                item.email
-                                                    .toLowerCase()
-                                                    .includes(search)
-                                            );
-                                        })
-                                        .map((data, index) => (
+                    </div>
+                    <div className="row">
+                        <div className="col-lg-12">
+                            <div className="">
+                                <div className="table-responsive">
+                                    <table className="table project-list-table table-nowrap align-middle table-borderless">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" className="ps-4" style={{width: "50px"}}>
+                                                    <div className="form-check font-size-16"><input type="checkbox" className="form-check-input" id="contacusercheck" /><label className="form-check-label" for="contacusercheck"></label></div>
+                                                </th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Position</th>
+                                                <th scope="col">Email</th>
+                                                <th scope="col">Projects</th>
+                                                <th scope="col" style={{width: "200px"}}>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>  
+                                        {records &&
+                                                    records
+                                                        .filter((item) => {
+                                                            return (
+                                                                search.toLowerCase() === ""
+                                                                    ? item
+                                                                    : item.firstname
+                                                                        .toLowerCase()
+                                                                        .includes(search),
+                                                                item.email
+                                                                    .toLowerCase()
+                                                                    .includes(search)
+                                                            );
+                                                        })
+                                                        .map((data, index) => (        
                                             <tr key={index}>
-                                                <td>{data.IDnumber}</td>
-                                                <td>{data.name}</td>
+                                                <th scope="row" className="ps-4">
+                                                    <div className="form-check font-size-16"><input type="checkbox" className="form-check-input" id="contacusercheck9" /><label className="form-check-label" for="contacusercheck9"></label></div>
+                                                </th>
+                                                <td className="flex items-center"><img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" className="avatar-sm rounded-circle me-2" /><a href="#" className="text-body">{data.firstname}{data.lastname}</a></td>
+                                                <td><span className="badge badge-soft-success mb-0">{data.role}</span></td>
                                                 <td>{data.email}</td>
+                                                <td>231</td>
                                                 <td>
-                                                    {" "}
-                                                    <span className="badge badge-soft-success p-2 team-status">
-                                                        Active
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <a
-                                                        className="bg-transparent flex justify-end pr-2 cursor-pointer"
-                                                        onClick={(e) =>
-                                                            toggleExamOpen(
-                                                                data.id,
-                                                                e
-                                                            )
-                                                        }
-                                                    >
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            width="20"
-                                                            height="20"
-                                                            fill="black"
-                                                            className="bi bi-three-dots"
-                                                            viewBox="0 0 16 16"
-                                                        >
-                                                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3" />
-                                                        </svg>
-                                                    </a>
-                                                    {openID === data.id &&
-                                                        openExam && (
-                                                            <div
+                                                    <ul className="list-inline mb-0">
+                                                        <li className="list-inline-item">
+                                                            <a data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" className="px-2 text-primary"><i className="bx bx-pencil font-size-18"></i></a>
+                                                        </li>
+                                                        <li className="list-inline-item">
+                                                            <a onClick={() => handleSubmit(data.id)} data-bs-placement="top" title="Delete" className="px-2 text-danger cursor-pointer"><i className="bx bx-trash-alt font-size-18"></i></a>
+                                                        </li>
+                                                        <li className="list-inline-item dropdown">
+                                                            <a className="text-muted dropdown-toggle font-size-18 px-2" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true"><i className="bx bx-dots-vertical-rounded"></i></a>
+                                                            <div className="dropdown-menu dropdown-menu-end">
+                                                                <a className="dropdown-item"    
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#DetailsModal"
                                                                 onClick={() =>
-                                                                    setExamOpen(
-                                                                        false
-                                                                    )
-                                                                }
-                                                                className="absolute rounded-md shadow-sm bg-white py-2"
-                                                            >
-                                                                <ul>
-                                                                    <Dropdown.Link
-                                                                        data-bs-toggle="modal"
-                                                                        data-bs-target="#DetailsModal"
-                                                                        onClick={() =>
-                                                                            ProfileDetails(
-                                                                                data.id
-                                                                            )
-                                                                        }
-                                                                    >
-                                                                        View
-                                                                    </Dropdown.Link>
-                                                                    <Dropdown.Link
-                                                                        href={route(
-                                                                            "exampage"
-                                                                        )}
-                                                                    >
-                                                                        Edit
-                                                                    </Dropdown.Link>
-                                                                    <Dropdown.Link
-                                                                        onClick={() =>
-                                                                            handleSubmit(
-                                                                                data.id
-                                                                            )
-                                                                        }
-                                                                    >
-                                                                        Delete
-                                                                    </Dropdown.Link>
-                                                                </ul>
+                                                                    ProfileDetails(
+                                                                        data.id
+                                                                    )}>Details</a>
+                                                                <a className="dropdown-item" href="#">Another action</a>
+                                                                <a className="dropdown-item" href="#">Something else here</a>
                                                             </div>
-                                                        )}
+                                                        </li>
+                                                    </ul>
                                                 </td>
                                             </tr>
+                                                ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row g-0 align-items-center pb-4">
+                        <div className="col-sm-6">
+                            <div><p className="mb-sm-0">Showing 1 to 10 of 57 entries</p></div>
+                        </div>
+                        <div className="col-sm-6">
+                            <div className="float-sm-end">
+                                <ul className="pagination mb-sm-0">
+                                    <li className="page-item disabled">
+                                        <a  onClick={prePage} className="page-link"><i className="mdi mdi-chevron-left"></i></a>
+                                    </li>
+                                    
+                                    {numbers.map((n, i) => (
+                                            <li
+                                                className={`page-item ${
+                                                    currentPage === n
+                                                        ? "active"
+                                                        : ""
+                                                }`}
+                                                key={i}
+                                            >
+                                                <a
+                                                    href="#"
+                                                    className="page-link"
+                                                    onClick={() =>
+                                                        changeCPage(n)
+                                                    }
+                                                >
+                                                    {n}
+                                                </a>
+                                            </li>
                                         ))}
-                            </tbody>
-                        </table>
+                                   
+                                    <li className="page-item">
+                                        <a onClick={nextPage} className="page-link"><i className="mdi mdi-chevron-right"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-
             {/* modal View Details */}
             <div
                 className="modal fade pr-96"

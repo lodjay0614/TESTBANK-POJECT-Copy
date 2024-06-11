@@ -49,6 +49,7 @@ class AdminController extends Controller
     {
       return Inertia::render('page/Reg_Form');
     }
+
     function deleteTeacher($id)
     {
       $data = User::find($id);

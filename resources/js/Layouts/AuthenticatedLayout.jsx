@@ -9,11 +9,6 @@ export default function Authenticated({ auth, user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 
-    const [openExam, setExamOpen] = useState(false);
-    const toggleExamOpen = (e) => {
-        e.preventDefault();
-        setExamOpen((previousState) => !previousState);
-    };
     const [openReg, setRegOpen] = useState(false);
     const toggleRegOpen = (e) => {
         e.preventDefault();
@@ -44,11 +39,12 @@ export default function Authenticated({ auth, user, header, children }) {
                                     Dashboard
                                 </NavLink>
                             </div>
+                            {user.role === "Teacher" ? (
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink
                                     className="text-white"
                                     active={route().current("exampage")}
-                                    onClick={toggleExamOpen}
+                                    role="button" data-bs-toggle="dropdown" aria-haspopup="true"
                                 >
                                     Exam
                                     <svg
@@ -64,42 +60,13 @@ export default function Authenticated({ auth, user, header, children }) {
                                         />
                                     </svg>
                                 </NavLink>
-                                {openExam && (
-                                    <div
-                                        onClick={() => setExamOpen(false)}
-                                        className="absolute rounded-md shadow-sm bg-white py-2 mt-14"
-                                    >
-                                        <ul>
-                                            <Dropdown.Link
-                                                href={route("exampage")}
-                                            >
-                                                Multiple Choice
-                                            </Dropdown.Link>
-                                            <Dropdown.Link
-                                                href={route("exampage")}
-                                            >
-                                                Identification
-                                            </Dropdown.Link>
-                                            <Dropdown.Link
-                                                href={route("exampage")}
-                                            >
-                                                Enumeration
-                                            </Dropdown.Link>
-                                            <Dropdown.Link
-                                                href={route("exampage")}
-                                            >
-                                                Problem Solving
-                                            </Dropdown.Link>
-                                            <Dropdown.Link
-                                                href={route("exampage")}
-                                            >
-                                                Figure
-                                            </Dropdown.Link>
-                                        </ul>
-                                    </div>
-                                )}
+                                <div className="dropdown-menu dropdown-menu-end">
+                                        <a className="dropdown-item" href={route("exampage")}>List</a>
+                                        <a className="dropdown-item" href={route("exampage_pending")}>Pending</a>
+                                        <a className="dropdown-item" href="#">Denied</a>
+                                </div>
                             </div>
-
+                        ) : ("")}
                             {user.role === "admin" ? (
                                 <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                     <NavLink
@@ -107,7 +74,7 @@ export default function Authenticated({ auth, user, header, children }) {
                                         active={route().current(
                                             "register_teacher"
                                         )}
-                                        onClick={toggleRegOpen}
+                                        role="button" data-bs-toggle="dropdown" aria-haspopup="true"
                                     >
                                         Registration
                                         <span
@@ -132,54 +99,13 @@ export default function Authenticated({ auth, user, header, children }) {
                                             />
                                         </svg>
                                     </NavLink>
-                                    {openReg && (
-                                        <div
-                                            onClick={() => setRegOpen(false)}
-                                            className="absolute rounded-md shadow-sm bg-white py-2 mt-14"
-                                        >
-                                            <ul>
-                                                <Dropdown.Link
-                                                    href={route("reg_teacher")}
-                                                >
-                                                    Teacher Reg
-                                                </Dropdown.Link>
-                                                <Dropdown.Link
-                                                    href={route(
-                                                        "register_student"
-                                                    )}
-                                                >
-                                                    Student Reg
-                                                </Dropdown.Link>
-                                                <Dropdown.Link
-                                                    href={route(
-                                                        "register_courses"
-                                                    )}
-                                                >
-                                                    Courses
-                                                </Dropdown.Link>
-                                            </ul>
-                                        </div>
-                                    )}
+                                    <div className="dropdown-menu dropdown-menu-end">
+                                        <a className="dropdown-item" href={route("reg_teacher")}>Teacher Register</a>
+                                        <a className="dropdown-item" href="#">Student Register</a>
+                                        <a className="dropdown-item" href={route("register_courses")}>Courses</a>
+                                    </div>
                                 </div>
-                            ) : (
-                                <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                    <a className="cursor-pointer opacity-0.5 inline-flex items-center border-transparent text-gray-500 dark:text-gray-400 focus:text-gray-700 dark:focus:text-gray-300 focus:border-gray-300 dark:focus:border-gray-700">
-                                        Registration
-                                        <svg
-                                            className="ms-2 -me-0.5 h-4 w-4"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20"
-                                            fill="currentColor"
-                                        >
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                clipRule="evenodd"
-                                            />
-                                        </svg>
-                                    </a>
-                                </div>
-                            )}
+                            ) : ("")}
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink
                                     className="text-white"
@@ -199,7 +125,7 @@ export default function Authenticated({ auth, user, header, children }) {
                                                 type="button"
                                                 className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"
                                             >
-                                                {user.name}
+                                                {user.firstname}
 
                                                 <svg
                                                     className="ms-2 -me-0.5 h-4 w-4"

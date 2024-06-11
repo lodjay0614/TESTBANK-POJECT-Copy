@@ -25,6 +25,7 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/exampage', [ExamController::class, 'exampage'])->name('exampage');
+Route::get('/exampage_pending', [ExamController::class, 'exampage_pending'])->name('exampage_pending');
 Route::get('/export', [ExportController::class, 'exportFile'])->middleware(['auth', 'verified'])->name('export');
 Route::get('/reg_teacher', [TeacherController::class, 'register'])->name('reg_teacher');
 Route::get('/register_student', [StudentController::class, 'register'])->name('register_student');

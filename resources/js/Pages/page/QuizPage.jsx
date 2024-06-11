@@ -218,20 +218,6 @@ export default function QuizPage({ auth }) {
                                                 )}
                                         </select>
                                     </div>
-                                    <div className="ml-2">
-                                        <select
-                                            name=""
-                                            id=""
-                                            style={{
-                                                border: "1px solid #dee2e6",
-                                                borderRadius: "8px",
-                                            }}
-                                        >
-                                            <option value="">Approved</option>
-                                            <option value="">Pending</option>
-                                            <option value="">Denied</option>
-                                        </select>
-                                    </div>
                                 </div>
                             </div>
                         </div>

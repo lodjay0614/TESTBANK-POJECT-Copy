@@ -30,7 +30,7 @@ export default function Details({ data }) {
         <div className="container">
             <div className="row py-4">
                 <div className="col-xl-auto">
-                    <div className="card">
+                    <div className="card" style={{backgroundColor: "rgb(153 27 27)"}}>
                         <div className="card-body pb-0">
                             <div className="row align-items-center">
                                 <div className="col-md-3">
@@ -43,7 +43,7 @@ export default function Details({ data }) {
                                         <h4 className="text-primary font-size-20 mt-3 mb-2">
                                             {data.name}
                                         </h4>
-                                        <h5 className="text-muted font-size-13 mb-0">
+                                        <h5 className="text-white font-size-13 mb-0">
                                             ID#: {data.IDnumber}
                                         </h5>
                                     </div>
@@ -51,11 +51,11 @@ export default function Details({ data }) {
                                 <div className="col-md-9">
                                     <div className="ms-3">
                                         <div>
-                                            <h4 className="card-title mb-2 font-bold text-xl">
+                                            <h4 className="card-title mb-2 font-light text-xl text-white">
                                                 {data.role}
                                             </h4>
-                                            <p className="mb-0 text-muted">
-                                                Hi I'm {data.name},has been the
+                                            <p className="mb-0 text-white">
+                                                Hi I'm {data.firstname},has been the
                                                 industry's standard dummy text
                                                 To an English person alteration
                                                 text.
@@ -64,13 +64,13 @@ export default function Details({ data }) {
                                         <div className="row my-4">
                                             <div className="col-md-12">
                                                 <div>
-                                                    <p className="text-muted mb-2 fw-medium">
+                                                    <p className="text-white mb-2 fw-medium">
                                                         <i className="mdi mdi-email-outline me-2"></i>
                                                         {data.email}
                                                     </p>
                                                     <p className="text-muted fw-medium mb-0">
-                                                        <i className="mdi mdi-phone-in-talk-outline me-2"></i>
-                                                        418-955-4703
+                                                        {/* <i className="mdi mdi-phone-in-talk-outline me-2"></i>
+                                                        418-955-4703 */}
                                                     </p>
                                                 </div>
                                             </div>
@@ -147,7 +147,7 @@ export default function Details({ data }) {
                         </div>
                     </div>
 
-                    <div className="card">
+                    <div className="card" style={{backgroundColor: "rgb(185 28 28)"}}>
                         <div className="tab-content p-4">
                             {/* course window */}
 
@@ -156,20 +156,20 @@ export default function Details({ data }) {
                                 id="course-tab"
                                 role="tabpanel"
                             >
-                                <h4 className="card-title mb-4">My Courses</h4>
+                                <h4 className="card-title text-white mb-4">My Courses</h4>
 
                                 <div class="task-list-box" id="design-task">
-                                    <div id="task-item-2">
+                                    <div id="task-item-2" className="flex">
                                         {Courserecords &&
                                             Courserecords.map(
                                                 (course, index) => (
                                                     <div
-                                                        class="card task-box rounded-3"
+                                                        class="card ml-2 mb-2 w-50 task-box rounded-3"
                                                         key={index}
                                                     >
-                                                        <div class="card-body">
+                                                        <div class="card-body flex">
                                                             <div class="row align-items-center">
-                                                                <div class="col-xl-6 col-sm-5">
+                                                                <div class="col-xl-6 col-sm-5 flex">
                                                                     <div class="checklist form-check font-size-15">
                                                                         <input
                                                                             type="checkbox"
@@ -186,6 +186,17 @@ export default function Details({ data }) {
                                                                             }
                                                                         </label>
                                                                     </div>
+                                                                    <div className="list-inline-item dropdown ml-24">
+                                                                        <a className="text-muted dropdown-toggle font-size-18 px-2" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true"><i className="bx bx-dots-vertical-rounded"></i></a>
+                                                                        <div className="dropdown-menu dropdown-menu-end">
+                                                                            <a className="dropdown-item"    
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#DetailsModal"
+                                                                           >delete</a>
+                                                                            <a className="dropdown-item" href="#">Another action</a>
+                                                                            <a className="dropdown-item" href="#">Something else here</a>
+                                                                     </div>
+                                                        </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -205,7 +216,7 @@ export default function Details({ data }) {
                             >
                                 <div className="d-flex align-items-center">
                                     <div className="flex-1">
-                                        <h4 className="card-title mb-4">
+                                        <h4 className="card-title mb-4 text-white">
                                             My Task
                                         </h4>
                                     </div>

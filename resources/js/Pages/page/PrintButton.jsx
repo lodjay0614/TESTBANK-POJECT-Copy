@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import {useReactToPrint} from "react-to-print";
-import PrintProvider, { Print } from 'react-easy-print';
+
 import PrimaryButton from "@/Components/PrimaryButton";
 import ApplicationLogo from "@/Components/ApplicationLogo";
 
