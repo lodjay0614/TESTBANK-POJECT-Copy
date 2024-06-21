@@ -1,5 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import Modal from './Modal';
+import { Head, Link, useForm } from "@inertiajs/react";
+import TextInput from "@/Components/TextInput";
 
 export default function Details({ data }) {
     const [Courserecords, setCourseRecords] = useState([]);
@@ -26,6 +29,73 @@ export default function Details({ data }) {
         };
         getQuizdata();
     }, []);
+
+    const [isOpen, setIsOpen] = useState(false);
+    const [isAddOpen, setIsAddOpen] = useState(false);
+    const [question, setquestion] = useState();
+    const [level, setlevel] = useState();
+
+    const openModal = (Question,level) => {
+      setIsOpen(true);
+      setquestion(Question);
+      setlevel(level);
+    };
+    const closeModal = () => {
+        setIsOpen(false);
+      };
+  
+    const openCourseModal = () => {
+        setIsAddOpen(true);
+      };
+      const closeAddModal = () => {
+        setIsAddOpen(false);
+      };
+  
+  
+   
+    const {post, setData} = useForm({
+        id: "",
+        status:"Approved",
+        TeacherID:data.id,
+        TeacherIDnum:data.IDnumber,
+        TeacherName:data.firstname,
+        TeacherEmail:data.email,
+        course: "",
+    });
+    const submit = () => {
+        post(route("editStatus"));
+    };
+    const submitAddCourse = () => {
+        post(route("updateCourse"));
+    };
+    const [courseRecords, setcourseRecords] = useState([]);
+    useEffect(() => {
+        const getCoursedata = async () => {
+            const reqdata = await fetch("http://127.0.0.1:8000/jsoncourse");
+            const resdata = await reqdata.json();
+            // setUserdata(resdata);
+            setcourseRecords(resdata);
+        };
+        getCoursedata();
+    }, []);
+
+    
+   const filter = Courserecords.map(data=>data.course_code);
+
+    const [selectedOptions, setSelectedOptions] = useState([]);
+    const handleOptionClick = (option) => {
+        if (selectedOptions.includes(option)) {
+            setSelectedOptions(
+                selectedOptions.filter((item) => item !== option)
+            );
+        } else {
+            setSelectedOptions([...selectedOptions, option]);
+        }
+    };
+    useEffect(() => {
+        setData("course", selectedOptions);
+    }, [selectedOptions]);
+
     return (
         <div className="container">
             <div className="row py-4">
@@ -41,7 +111,7 @@ export default function Details({ data }) {
                                             alt=""
                                         />
                                         <h4 className="text-primary font-size-20 mt-3 mb-2">
-                                            {data.name}
+                                            {data.firstname}{" "}{data.lastname}
                                         </h4>
                                         <h5 className="text-white font-size-13 mb-0">
                                             ID#: {data.IDnumber}
@@ -55,10 +125,7 @@ export default function Details({ data }) {
                                                 {data.role}
                                             </h4>
                                             <p className="mb-0 text-white">
-                                                Hi I'm {data.firstname},has been the
-                                                industry's standard dummy text
-                                                To an English person alteration
-                                                text.
+                                            “Character Building is Nation Building”
                                             </p>
                                         </div>
                                         <div className="row my-4">
@@ -156,55 +223,25 @@ export default function Details({ data }) {
                                 id="course-tab"
                                 role="tabpanel"
                             >
+                                <div className="flex justify-between">
                                 <h4 className="card-title text-white mb-4">My Courses</h4>
-
-                                <div class="task-list-box" id="design-task">
-                                    <div id="task-item-2" className="flex">
-                                        {Courserecords &&
+                                <div className="col-md-6">
+                        
+                         
+                         
+                        </div>
+                                <a className="text-md text-white cursor-pointer hover:underline select-none" onClick={openCourseModal}>+ add course</a>
+                                </div>
+                               <div>
+                               {Courserecords &&
                                             Courserecords.map(
                                                 (course, index) => (
-                                                    <div
-                                                        class="card ml-2 mb-2 w-50 task-box rounded-3"
-                                                        key={index}
-                                                    >
-                                                        <div class="card-body flex">
-                                                            <div class="row align-items-center">
-                                                                <div class="col-xl-6 col-sm-5 flex">
-                                                                    <div class="checklist form-check font-size-15">
-                                                                        <input
-                                                                            type="checkbox"
-                                                                            class="form-check-input"
-                                                                            id="customCheck2"
-                                                                            checked
-                                                                        />
-                                                                        <label
-                                                                            class="form-check-label ms-1 task-title"
-                                                                            for="customCheck2"
-                                                                        >
-                                                                            {
-                                                                                course.course_code
-                                                                            }
-                                                                        </label>
-                                                                    </div>
-                                                                    <div className="list-inline-item dropdown ml-24">
-                                                                        <a className="text-muted dropdown-toggle font-size-18 px-2" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true"><i className="bx bx-dots-vertical-rounded"></i></a>
-                                                                        <div className="dropdown-menu dropdown-menu-end">
-                                                                            <a className="dropdown-item"    
-                                                                            data-bs-toggle="modal"
-                                                                            data-bs-target="#DetailsModal"
-                                                                           >delete</a>
-                                                                            <a className="dropdown-item" href="#">Another action</a>
-                                                                            <a className="dropdown-item" href="#">Something else here</a>
-                                                                     </div>
-                                                        </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                )
-                                            )}
-                                    </div>
-                                </div>
+                            <a className="badge badge-dark badge-pill bg-yellow-500 m-1 px-16 py-2" key={index}>{course.course_code}</a>
+                            
+                        )
+                    )}
+                            <hr/>
+                               </div>
                             </div>
 
                             {/* end courses window */}
@@ -214,42 +251,16 @@ export default function Details({ data }) {
                                 id="task-tab"
                                 role="tabpanel"
                             >
-                                <div className="d-flex align-items-center">
+                                <div className="d-flex items-center">
                                     <div className="flex-1">
                                         <h4 className="card-title mb-4 text-white">
                                             My Task
                                         </h4>
                                     </div>
-                                </div>
-
-                                <div className="row" id="all-projects">
-                                    {Questionrecords &&
-                                        Questionrecords.map(
-                                            (data, index) =>
-                                                data.Qstatus == "Pending" && (
-                                                    <div
-                                                        className="col-md-6 w-full"
-                                                        id="project-items-3"
-                                                    >
-                                                        <div className="card">
-                                                            <div className="card-body">
-                                                                <div className="d-flex mb-3">
-                                                                    <div className="flex-grow-1 align-items-start">
-                                                                        <div>
-                                                                            <h6 className="mb-0 text-muted">
-                                                                                <i className="mdi mdi-circle-medium text-warning fs-3 align-middle"></i>
-                                                                                <span className="team-date">
-                                                                                    08
-                                                                                    Sep,
-                                                                                    2021
-                                                                                </span>
-                                                                            </h6>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="dropdown ms-2">
-                                                                        <a
-                                                                            href="#"
-                                                                            className="dropdown-toggle font-size-16 text-muted"
+                                    <div className="dropdown">
+                                        <a
+                                            href="#"
+                                                                            className="dropdown-toggle font-size-16 text-white"
                                                                             data-bs-toggle="dropdown"
                                                                             aria-haspopup="true"
                                                                             aria-expanded="false"
@@ -274,8 +285,99 @@ export default function Details({ data }) {
                                                                                 >
                                                                                     <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z" />
                                                                                 </svg>
-                                                                                Approved
+                                                                                Approved all
                                                                             </a>
+                                                                            <a
+                                                                                className="dropdown-item flex"
+                                                                                href=""
+                                                                            >
+                                                                                <svg
+                                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                                    width="16"
+                                                                                    height="16"
+                                                                                    fill="red"
+                                                                                    className="bi bi-x mt-1 mr-2"
+                                                                                    viewBox="0 0 16 16"
+                                                                                >
+                                                                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                                                                </svg>
+                                                                                Denied all
+                                                                            </a>
+                                                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row" id="all-projects">
+                                    {Questionrecords &&
+                                        Questionrecords.map(
+                                            (data, index) =>
+                                                data.Qstatus == "Pending" && (
+                                                    <div
+                                                        className="col-md-6 w-full"
+                                                        id="project-items-3"
+                                                    >
+                                                        <div className="card">
+                                                            <div className="card-body flex" style={{height:"80px"}}>
+                                                                <div className="d-flex mb-3">
+                                                                    <div className="flex-grow-1 align-items-start">
+                                                                       
+                                                                    </div>
+                                                                   
+                                                                </div>
+
+                                                                <div
+                                                                    className="mb-4 w-100"
+                                                                    key={index}
+                                                                >
+                                                                    <h5 className="mb-1 text-sm team-title">
+                                                                        {
+                                                                            data.difficulty
+                                                                        }
+                                                                    </h5>
+                                                                    <p className="ellipsis text-muted text-sm mb-0 team-description">
+                                                                        {
+                                                                            data.Question
+                                                                        }
+                                                                    </p>
+                                                                </div>
+
+                                                                <div className="d-flex justify-end items-end">
+                                                                    <div className="align-self-end">
+                                                                        <span className="badge badge-soft-warning p-2 team-status">
+                                                                            Pending
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="dropdown ms-2">
+                                                                        <a
+                                                                            
+                                                                            href="#"
+                                                                            className="dropdown-toggle font-size-16 text-muted"
+                                                                            data-bs-toggle="dropdown"
+                                                                            aria-haspopup="true"
+                                                                            aria-expanded="false"
+                                                                        >
+                                                                            <i className="mdi mdi-dots-horizontal"></i>
+                                                                        </a>
+
+                                                                        <div className="dropdown-menu dropdown-menu-end">
+                                                                             
+                                                                        <a
+                                                                                className="dropdown-item flex cursor-pointer"
+                                                                                onClick={()=>openModal(data.Question,data.difficulty, setData("id", data.id))}
+                                                                            >
+                                                                                <svg
+                                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                                    width="16"
+                                                                                    height="16"
+                                                                                    fill="lightblue"
+                                                                                    className="bi bi-check-lg mt-1 mr-2"
+                                                                                    viewBox="0 0 16 16"
+                                                                                >
+                                                                                    <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z" />
+                                                                                </svg>
+                                                                             Approved
+                                                                            </a>
+                                                                        
                                                                             <a
                                                                                 className="dropdown-item flex"
                                                                                 href=""
@@ -294,31 +396,6 @@ export default function Details({ data }) {
                                                                             </a>
                                                                         </div>
                                                                     </div>
-                                                                </div>
-
-                                                                <div
-                                                                    className="mb-4"
-                                                                    key={index}
-                                                                >
-                                                                    <h5 className="mb-1 font-size-17 team-title">
-                                                                        {
-                                                                            data.difficulty
-                                                                        }
-                                                                    </h5>
-                                                                    <p className="text-muted mb-0 team-description">
-                                                                        {
-                                                                            data.Question
-                                                                        }
-                                                                    </p>
-                                                                </div>
-
-                                                                <div className="d-flex justify-end items-end">
-                                                                    <div className="align-self-end">
-                                                                        <span className="badge badge-soft-warning p-2 team-status">
-                                                                            Pending
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -936,6 +1013,107 @@ export default function Details({ data }) {
                             {/* end team window */}
                         </div>
                     </div>
+                                <Modal isOpen={isOpen} onClose={closeModal}>
+                                    <h2 className="font-bold py-2">{level}</h2>
+                                    <p className="py-2">{question}</p>
+                                    <form onSubmit={submit}>
+                                      <div className="flex justify-center items-center py-4">
+                                      <button className="button-29 py-2" role="button" type="submit">Approved</button>
+                                      </div>
+                                    </form>
+                                </Modal>
+                                  {/* modal Courses */}
+                                  <Modal isOpen={isAddOpen} onClose={closeAddModal}>
+                <div>
+                <form onSubmit={submitAddCourse}>
+                                    <div className="modal-dialog">
+                                        <div className="modal-content">
+                                            <div className="modal-header">
+                                                <h5
+                                                    className="modal-title"
+                                                    id="exampleModalLabel"
+                                                >
+                                                    List of Courses
+                                                </h5>
+                                                
+                                            </div>
+                                          
+                                            <div className="modal-body">
+                                               
+                                    <TextInput
+                                          id="course"
+                                          type="text"
+                                          name="course"
+                                          value={selectedOptions.join(", ")}
+                                          onchange={(e)=>setData("course", e.value)}
+                                          className="mt-1 block w-full shadow-none cursor-pointer"
+                                      />
+                                                <div className="pt-2">
+                                                    {courseRecords.map(
+                                                        (course, index) => (
+                                                
+                                                      
+                                                            <div
+                                                                className="row"
+                                                                key={index}
+                                                            >
+                                                                <div className="col-xl-12">
+                                                                    <div
+                                                                        className="task-list-box"
+                                                                        id="landing-task"
+                                                                    >
+                                                                        <div id="task-item-1">
+                                                                            <div className="card task-box rounded-3">
+                                                                                <div className="card-body">
+                                                                                    <div className="row align-items-center">
+                                                                                        <div className="col-xl-6 col-sm-5">
+                                                                                            <div className="checklist form-check font-size-15">
+                                                                                                <input
+                                                                                                    name="course"
+                                                                                                    type="checkbox"
+                                                                                                    className="form-check-input"
+                                                                                                    id={`${course.course_code}`}
+                                                                                                    checked={selectedOptions.includes(
+                                                                                                        course.course_code
+                                                                                                    )}
+                                                                                                    onClick={() =>
+                                                                                                        handleOptionClick(
+                                                                                                            course.course_code
+                                                                                                        )
+                                                                                                    }
+                                                                                                />
+                                                                                                <label
+                                                                                                    className="form-check-label ms-1 task-title"
+                                                                                                    htmlFor={`${course.course_code}`}
+                                                                                                >
+                                                                                                    {
+                                                                                                        course.course_code
+                                                                                                    }
+                                                                                                </label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    )}
+                                                </div>
+                                                
+                                            </div>
+                                          
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-center items-center">
+                                    <button className="button-29 py-2" role="button" type="submit">Done</button>
+                                    </div>
+                                    </form>
+                </div>
+                </Modal>
+            {/* end modal Course */}
                 </div>
             </div>
         </div>

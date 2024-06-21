@@ -1,5 +1,6 @@
-import { useState } from "react";
+
 import ApplicationLogo from "@/Components/ApplicationLogo";
+import { useState, useEffect } from "react";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
@@ -14,6 +15,18 @@ export default function Authenticated({ auth, user, header, children }) {
         e.preventDefault();
         setRegOpen((previousState) => !previousState);
     };
+
+    const [Questionrecords, setQuestionRecords] = useState([]);
+    useEffect(() => {
+        const getQuizdata = async () => {
+            const reqdata = await fetch(
+                `http://127.0.0.1:8000/pendingQuestion`
+            );
+            const resdata = await reqdata.json();
+            setQuestionRecords(resdata);
+        };
+        getQuizdata();
+    }, []);
 
     return (
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -77,15 +90,19 @@ export default function Authenticated({ auth, user, header, children }) {
                                         role="button" data-bs-toggle="dropdown" aria-haspopup="true"
                                     >
                                         Registration
-                                        <span
+                                        {
+                                            Questionrecords > 0 &&
+                                            <span
                                             className="absolute w-5 h-5 rounded-full bg-red-600 flex justify-center items-center"
                                             style={{
                                                 transform:
                                                     "translate(95px, -12px)",
                                             }}
-                                        >
-                                            <p className="text-xs">2</p>
-                                        </span>
+                                            >
+                                            <p className="text-xs">{Questionrecords}</p>
+                                            </span>
+                                        }
+                                      
                                         <svg
                                             className="ms-2 -me-0.5 h-4 w-4"
                                             xmlns="http://www.w3.org/2000/svg"
@@ -100,7 +117,20 @@ export default function Authenticated({ auth, user, header, children }) {
                                         </svg>
                                     </NavLink>
                                     <div className="dropdown-menu dropdown-menu-end">
-                                        <a className="dropdown-item" href={route("reg_teacher")}>Teacher Register</a>
+                                        <a className="dropdown-item" href={route("reg_teacher")}>Teacher Register  
+                                            {
+                                            Questionrecords > 0 &&
+                                            <span
+                                            className="absolute w-5 h-5 rounded-full bg-red-600 flex justify-center items-center"
+                                            style={{
+                                                transform:
+                                                    "translate(120px, -33px)",
+                                            }}
+                                            >
+                                            <p className="text-xs text-white">{Questionrecords}</p>
+                                            </span>
+                                        }
+                                        </a>
                                         <a className="dropdown-item" href="#">Student Register</a>
                                         <a className="dropdown-item" href={route("register_courses")}>Courses</a>
                                     </div>

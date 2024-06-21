@@ -138,6 +138,9 @@ export default function QuizPage({ auth }) {
                         <div className="flex justify-end">
                             <div className="w-100 flex flex-column">
                                 <div className="w-100 p-2 flex justify-end">
+                                    <div className="bg-">
+
+                                    </div>
                                     <div className="w-75 flex justify-end">
                                         <div className="w-50 flex justify-end">
                                             <input
@@ -250,7 +253,9 @@ export default function QuizPage({ auth }) {
                                     .slice(firstIndex, lastIndex)
                                     .reverse()
                                     .map((rec, index) => (
-                                        <tr key={index}>
+                                        <tr key={index} 
+                                            className={rec.Qstatus === "Pending" ? "table-warning" : "table-primary"}
+                                        >
                                             <td>{records.length - index}</td>
                                             <td>{rec.Question}</td>
                                             <td>{rec.Aa}</td>

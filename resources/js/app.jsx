@@ -2,6 +2,7 @@ import "./bootstrap";
 import "../css/app.css";
 import "../css/profileStyle.css";
 import "../css/dashboard.css";
+import "../css/Modal.css";
 
 import { createRoot } from "react-dom/client";
 import { createInertiaApp } from "@inertiajs/react";

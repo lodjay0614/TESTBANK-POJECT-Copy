@@ -186,7 +186,7 @@ export default function register_teacher({ auth }) {
                                         <thead>
                                             <tr>
                                                 <th scope="col" className="ps-4" style={{width: "50px"}}>
-                                                    <div className="form-check font-size-16"><input type="checkbox" className="form-check-input" id="contacusercheck" /><label className="form-check-label" for="contacusercheck"></label></div>
+                                                   
                                                 </th>
                                                 <th scope="col">Name</th>
                                                 <th scope="col">Position</th>
@@ -213,7 +213,7 @@ export default function register_teacher({ auth }) {
                                                         .map((data, index) => (        
                                             <tr key={index}>
                                                 <th scope="row" className="ps-4">
-                                                    <div className="form-check font-size-16"><input type="checkbox" className="form-check-input" id="contacusercheck9" /><label className="form-check-label" for="contacusercheck9"></label></div>
+                                                   
                                                 </th>
                                                 <td className="flex items-center"><img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" className="avatar-sm rounded-circle me-2" /><a href="#" className="text-body">{data.firstname}{data.lastname}</a></td>
                                                 <td><span className="badge badge-soft-success mb-0">{data.role}</span></td>

@@ -45,6 +45,9 @@ Route::post('/addCourse', [AdminController::class, "addCourse"])->name('addCours
 Route::get('/reg_form', [AdminController::class, "regForm"])->name('reg_form');
 Route::get('/HandleTeacherDelete/{id}', [AdminController::class, "deleteTeacher"]);
 Route::get('/pending_question/{id}', [AdminController::class, "Pending_json"]);
+Route::get('/pendingQuestion', [AdminController::class, "PendingJson"]);
+Route::post('/ApproveitNow', [AdminController::class, "approveQuestion"])->name('editStatus');
+Route::post('/UpdateitNow', [AdminController::class, "addTeacherCourse"])->name('updateCourse');
 // end admin
 
 // quiz

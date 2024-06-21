@@ -49,7 +49,7 @@ class ExamController extends Controller
         $model -> Akey = $request->Akey;
         $model -> difficulty = $request->Alvl;
         $model -> FieldOf = $request->Fieldof;
-        $model->save();
+        $model  ->save();
 
                     $model->Question()->create([
                         'Question_id' => $model->id,

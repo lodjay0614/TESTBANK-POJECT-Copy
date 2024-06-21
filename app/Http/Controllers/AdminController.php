@@ -62,5 +62,35 @@ class AdminController extends Controller
       $data = Quizmodel::all()->where('handled_by', $id);
       return $data;
     }
+    function PendingJson()
+    {
+      $data = Quizmodel::all()->where('Qstatus', "Pending")->count();
+      return $data;
+    }
+    public function approveQuestion(Request $request): RedirectResponse
+    {
+      $question = $request->id;
+      $data = Quizmodel::find($question);
+      $data->Qstatus = $request->status;
+      $data->save();
+
+      return redirect()->back();
+    }
+    public function addTeacherCourse(Request $request): RedirectResponse
+    {
+      if ($data = $request->course) {
+        foreach ($data as $datas) {
+                $data = new Course_Handled_By;
+                $data->prof_id = $request->TeacherID;
+                $data->prof_IDnumber = $request->TeacherIDnum;
+                $data->prof_name = $request->TeacherName;
+                $data->prof_email = $request->TeacherEmail;
+                $data->course_code = $datas;
+                $data->save();
+              }}
+     
+
+      return redirect()->back();
+    }
 
 }
