@@ -97,42 +97,47 @@ export default function register_teacher({ auth }) {
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.0/css/boxicons.min.css" integrity="sha512-pVCM5+SN2+qwj36KonHToF2p1oIvoU3bsqxphdOIWMYmgr4ZqD3t5DjKvvetKhXGc/ZG5REYTT6ltKfExEei/Q==" crossOrigin="anonymous" referrerPolicy="no-referrer" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.css" integrity="sha256-NAxhqDvtY0l4xn+YVa6WjAcmd94NNfttjNsDmNatFVc=" crossOrigin="anonymous" />
 
-
+<div className="py-12">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                        <div className="justify-end">
                 <div className="w-100 p-2 mt-2 flex justify-end">
-                                            <div className="w-75 flex justify-end">
-                                                <div className="px-12 w-50 flex justify-end">
-                                                    <input
-                                                        type="text"
-                                                        placeholder="Search here..."
-                                                        onChange={(e) =>
-                                                            setQuizSearch(e.target.value)
-                                                        }
-                                                        className="searchhere"
-                                                        style={{
-                                                            padding: "10px",
-                                                            borderRadius: "50px",
-                                                            border: "1px solid #dee2e6",
-                                                            width: "100%",
-                                                                
-                                                           
-                                                        }}
-                                                    />
-                                                    <svg
-                                                        style={{
-                                                            display: "absolute",
-                                                            transform: "translate(-40px, 12px)",
-                                                        }}
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        width="20"
-                                                        height="20"
-                                                        fill="currentColor"
-                                                        className="bi bi-search opacity-50"
-                                                        viewBox="0 0 16 16"
-                                                    >
-                                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-                                                    </svg>
-                                                </div>
-                                            </div>
+                <div className="w-75 flex justify-end">
+                                        <div className="w-50 flex justify-end">
+                                            <input
+                                                type="text"
+                                                placeholder="Search here..."
+                                                onChange={(e) =>
+                                                    setQuizSearch(
+                                                        e.target.value
+                                                    )
+                                                }
+                                                className="searchhere"
+                                                style={{
+                                                    padding: "10px",
+                                                    borderRadius: "50px",
+                                                    border: "1px solid #dee2e6",
+                                                    width: "100%",
+                                                    backgroundColor: "#f3f4f6",
+                                                }}
+                                            />
+                                            <svg
+                                                style={{
+                                                    display: "absolute",
+                                                    transform:
+                                                        "translate(-40px, 12px)",
+                                                }}
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="20"
+                                                height="20"
+                                                fill="currentColor"
+                                                className="bi bi-search opacity-50"
+                                                viewBox="0 0 16 16"
+                                            >
+                                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                                            </svg>
+                                        </div>
+                                    </div>
                                         </div>
                 <div className="container ">
                     <div className="row align-items-center">
@@ -238,7 +243,7 @@ export default function register_teacher({ auth }) {
                                                                         data.id
                                                                     )}>Details</a>
                                                                 <a className="dropdown-item" href="#">Another action</a>
-                                                                <a className="dropdown-item" href="#">Something else here</a>
+                                                               
                                                             </div>
                                                         </li>
                                                     </ul>
@@ -293,7 +298,7 @@ export default function register_teacher({ auth }) {
                 </div>
             {/* modal View Details */}
             <div
-                className="modal fade pr-96"
+                className="modal fade"
                 id="DetailsModal"
                 tabIndex="-1"
                 aria-labelledby="exampleModalLabel"
@@ -303,8 +308,8 @@ export default function register_teacher({ auth }) {
                     <div
                         className="modal-content"
                         style={{
-                            width: "100vh",
                             backgroundColor: "transparent",
+                            width: "max-content",
                             border: "none",
                         }}
                     >
@@ -318,6 +323,10 @@ export default function register_teacher({ auth }) {
                 </div>
             </div>
             {/* end modal details */}
+            </div>
+            </div>
+            </div>
+            </div>
         </AuthenticatedLayout>
     );
 }

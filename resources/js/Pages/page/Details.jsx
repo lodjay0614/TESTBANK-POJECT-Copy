@@ -233,11 +233,16 @@ export default function Details({ data }) {
                                 <a className="text-md text-white cursor-pointer hover:underline select-none" onClick={openCourseModal}>+ add course</a>
                                 </div>
                                <div>
-                               {Courserecords &&
+                               {
                                             Courserecords.map(
-                                                (course, index) => (
-                            <a className="badge badge-dark badge-pill bg-yellow-500 m-1 px-16 py-2" key={index}>{course.course_code}</a>
+                                                (Course, Index) => (
+                    <>
+                         <a className="badge badge-dark badge-pill bg-yellow-500 m-1 px-16 py-2" key={Index}>{Course.course_code}</a>
                             
+
+                                                         
+                                                    </>
+                           
                         )
                     )}
                             <hr/>
@@ -400,6 +405,7 @@ export default function Details({ data }) {
                                                         </div>
                                                     </div>
                                                 )
+                                                
                                         )}
                                 </div>
                             </div>
@@ -1022,8 +1028,9 @@ export default function Details({ data }) {
                                       </div>
                                     </form>
                                 </Modal>
-                                  {/* modal Courses */}
-                                  <Modal isOpen={isAddOpen} onClose={closeAddModal}>
+                                
+                                 {/* modal Courses */}
+            <Modal isOpen={isAddOpen} onClose={closeAddModal}>
                 <div>
                 <form onSubmit={submitAddCourse}>
                                     <div className="modal-dialog">
@@ -1049,10 +1056,12 @@ export default function Details({ data }) {
                                           className="mt-1 block w-full shadow-none cursor-pointer"
                                       />
                                                 <div className="pt-2">
-                                                    {courseRecords.map(
+                                            
+                                        
+                                                    {courseRecords
+                                                    .map(
                                                         (course, index) => (
-                                                
-                                                      
+                                                        
                                                             <div
                                                                 className="row"
                                                                 key={index}
@@ -1072,22 +1081,22 @@ export default function Details({ data }) {
                                                                                                     name="course"
                                                                                                     type="checkbox"
                                                                                                     className="form-check-input"
-                                                                                                    id={`${course.course_code}`}
+                                                                                                    id={`${course}`}
                                                                                                     checked={selectedOptions.includes(
-                                                                                                        course.course_code
+                                                                                                        course
                                                                                                     )}
                                                                                                     onClick={() =>
                                                                                                         handleOptionClick(
-                                                                                                            course.course_code
+                                                                                                            course
                                                                                                         )
                                                                                                     }
                                                                                                 />
                                                                                                 <label
                                                                                                     className="form-check-label ms-1 task-title"
-                                                                                                    htmlFor={`${course.course_code}`}
+                                                                                                    htmlFor={`${course}`}
                                                                                                 >
                                                                                                     {
-                                                                                                        course.course_code
+                                                                                                        course
                                                                                                     }
                                                                                                 </label>
                                                                                             </div>
@@ -1101,6 +1110,7 @@ export default function Details({ data }) {
                                                             </div>
                                                         )
                                                     )}
+                                           
                                                 </div>
                                                 
                                             </div>
