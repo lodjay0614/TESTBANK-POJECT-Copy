@@ -162,6 +162,12 @@ function QuizPage({ auth }) {
   // Calculate the sum of all range values
   const totalSum = ranges.reduce((acc, value) => acc + value, 0);
   
+  const [QuestionLevel, setQuestionLevel]=useState('');
+
+  const filteredItems = records.filter(item =>
+    item.FieldOf === coursePick
+  );
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -187,6 +193,14 @@ function QuizPage({ auth }) {
                                                 (Course, Index) => (
                                                     <option value={`${Course.course_code}`} key={Index}>{Course.course_code}</option>
                                                         ))}
+                                    </select>
+                                </div>
+                                <label>Level<label className="text-red-500 mt-4">*</label></label>
+                                <div class="select-container">
+                                    <select class="styled-select" onClick={(e)=>setQuestionLevel(e.target.value)}>
+                                            <option value="Easy" >Easy</option>
+                                            <option value="Average" >Average</option>
+                                            <option value="Hard" >Hard</option>
                                     </select>
                                 </div>
 
@@ -295,7 +309,10 @@ function QuizPage({ auth }) {
                                             </label>
                                         </div>
                                     </div>
-                                    {records.filter(fil => fil.FieldOf === coursePick).map((item, index) => (
+                                    {filteredItems
+                                    .filter(fil => 
+                                    fil.difficulty === QuestionLevel)
+                                    .map((item, index) => (
                                         <div key={index}>
                                             <div className="w-100 h-full">
                                                 <ol>
@@ -366,7 +383,7 @@ function QuizPage({ auth }) {
                                         </div>
                                     </div>
 
-                                    {records.filter(fil => fil.FieldOf === coursePick).map((item, index) => (
+                                    {filteredItems.filter(fil =>  fil.difficulty === QuestionLevel).map((item, index) => (
                                         <div key={index}>
                                             <div className="w-100 h-full">
                                                 <ol>

@@ -3,6 +3,10 @@ import React from "react";
 import { useEffect, useRef, useState } from "react";
 import { Head, Link, useForm } from "@inertiajs/react";
 import PrimaryButton from "@/Components/PrimaryButton";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
+
 
 export default function QuizPage({ auth }) {
     const [categoryData, setUserdata] = useState([]);
@@ -121,6 +125,10 @@ export default function QuizPage({ auth }) {
         };
         getQuizdata();
     }, []);
+
+    const handleSubmit = (event) => {
+           submitQuiz();
+    };
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -135,6 +143,7 @@ export default function QuizPage({ auth }) {
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="p-12 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                    <ToastContainer />
                         <div className="flex justify-end">
                             <div className="w-100 flex flex-column">
                                 <div className="w-100 p-2 flex justify-end">
@@ -596,9 +605,11 @@ export default function QuizPage({ auth }) {
                                                     </select>
                                                 </div>
 
-                                                <PrimaryButton className="ms-4">
-                                                    Save
-                                                </PrimaryButton>
+                                                <div className="flex justify-center items-center m-2 relative w-full p-4">
+                                                    <button className="button-21" role="button" type="submit">
+                                                    Update
+                                                    </button>
+                                                </div>
                                             </form>
                                         </div>
                                     </div>
@@ -634,7 +645,7 @@ export default function QuizPage({ auth }) {
                                         </div>
 
                                         <div className="modal-body">
-                                            <form onSubmit={submitQuiz}>
+                                            <form onSubmit={handleSubmit}>
                                                 <div className="mb-3">
                                                     <label
                                                         htmlFor="message-text"
@@ -842,9 +853,11 @@ export default function QuizPage({ auth }) {
                                                     </select>
                                                 </div>
 
-                                                <PrimaryButton className="ms-4">
-                                                    Add
-                                                </PrimaryButton>
+                                                <div className="flex justify-center items-center m-2 relative w-full p-4">
+                                                    <button className="button-21" role="button" type="submit">
+                                                    Done
+                                                    </button>
+                                                </div>
                                             </form>
                                         </div>
                                     </div>

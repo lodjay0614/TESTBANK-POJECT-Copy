@@ -29,9 +29,8 @@ class AdminController extends Controller
     }
     public function jsoncourses()
     {
-       $data = CourseList::all()->pluck('course_code');
-
-     return $data;
+    $data = CourseList::all()->pluck('course_code');
+    return $data;
     }
     public function viewData($id)
     {

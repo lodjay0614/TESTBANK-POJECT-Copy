@@ -32,7 +32,6 @@ class ExamController extends Controller
         ->where('quiz_models.handled_by', '=', $id)
         ->get();
         return $result;
-
     }
     function deleteQuiz($id)
     {
@@ -42,26 +41,46 @@ class ExamController extends Controller
     }
     function addQuiz(Request $request): RedirectResponse
     {
-        $id = Auth::user()->id;
-        $model = new QuizModel();
-        $model -> handled_by = $id;
-        $model -> Question = $request->question;
-        $model -> Akey = $request->Akey;
-        $model -> difficulty = $request->Alvl;
-        $model -> FieldOf = $request->Fieldof;
-        $model  ->save();
+          // Validate the request
+          $validated = $request->validate([
+            'question' => 'required|unique:quiz_models',
+        ]);
 
-                    $model->Question()->create([
-                        'Question_id' => $model->id,
-                        'Aa'=>$request->answerA,
-                        'Ab'=>$request->answerB,
-                        'Ac'=>$request->answerC,
-                        'Ad' => $request->answerD,  
-                    ]);
-        return redirect()->back();
+        // Example logic
+        try {
+            // Perform your operations (e.g., saving to database)
+            // Assuming everything goes well
+            $id = Auth::user()->id;
+            $model = new QuizModel();
+            $model -> handled_by = $id;
+            $model -> Question = $validated['question'];
+            $model -> Akey = $request->Akey;
+            $model -> difficulty = $request->Alvl;
+            $model -> FieldOf = $request->Fieldof;
+            $model  ->save();
+    
+                        $model->Question()->create([
+                            'Question_id' => $model->id,
+                            'Aa'=>$request->answerA,
+                            'Ab'=>$request->answerB,
+                            'Ac'=>$request->answerC,
+                            'Ad' => $request->answerD,  
+                        ]);
+            return redirect()->back()->with('message', 'Success!');
+
+        } catch (\Exception $e) {
+            // Handle errors
+            toast.error('Sorry, this question is already exist!');
+            return redirect()->back();
+        }
+
+
+
+       
     }
     function saveEditQuiz(Request $request): RedirectResponse
     {
+
         $id = $request->id;
         $model = QuizModel::find($id);
         $model -> Question = $request->question;
