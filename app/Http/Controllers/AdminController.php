@@ -30,8 +30,8 @@ class AdminController extends Controller
     public function jsoncourses()
     {
        $data = CourseList::all()->pluck('course_code');
-       if
-       return $data; 
+
+     return $data;
     }
     public function viewData($id)
     {
